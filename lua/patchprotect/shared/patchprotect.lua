@@ -1,13 +1,15 @@
 -- GET OWNER
 -- ent: valid entity to get owner player object.
 function sh_PProtect.GetOwner(ent)
-  if CLIENT and ent.ppowner == nil then
+  if (CLIENT) then
+   if ent.ppowner == nil then
     net.Start('pprotect_request_cl_data')
 	 net.WriteString("owner")
 	 net.WriteEntity(ent)
     net.SendToServer()
     ent.ppowner = "wait"
     return "wait"
+   end
   end
   return ent.ppowner
 end
