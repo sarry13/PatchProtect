@@ -22,18 +22,24 @@ end
 -- Checks if the given entity is a world object that should never be touched.
 -- ent: valid entity to check
 -- typ: type of interaction(phys, tool, spawn)
-local function CheckBlocked(ent,typ)
+
+local blocked_table = {
+	["func_door_rotating"] = true,
+	["func_breakable_surf"] = true,
+	["func_door"] = true,
+	["player"] = true,
+	["func_button"] = true,
+	["func_brush"] = true,
+	["func_breakable"] = true,
+	["func_physbox"] = true,
+	["prop_dynamic"] = true,
+	["func_wall_toggle"] = true,
+}
+
+local function CheckBlocked(ent, typ)
   local class = ent:GetClass()
-  if class == "func_door_rotating" and sh_PProtect.IsWorld(ent) and (typ == "phys" or typ == "tool" or typ == "spawn") then return true end
-  if class == "func_breakable_surf" and (typ == "phys" or typ == "tool" or typ == "spawn") then return true end
-  if class == "func_door" and sh_PProtect.IsWorld(ent) and (typ == "phys" or typ == "tool" or typ == "spawn") then return true end
-  if class == "player" and (typ == "tool" or typ == "spawn") then return true end
-  if class == "func_button" and (typ == "phys" or typ == "spawn") then return true end
-  if class == "func_brush" and (typ == "phys" or typ == "spawn") then return true end
-  if class == "func_breakable" and (typ == "phys" or typ == "spawn") then return true end
-  if class == "func_physbox" and (typ == "phys" or typ == "spawn") then return true end
-  if class == "prop_dynamic" and (typ == "phys" or typ == "spawn") then return true end
-  if class == "func_wall_toggle" and (typ == "phys" or typ == "tool" or typ == "spawn") then return true end
+  if blocked_table[class] and (typ == "phys" or typ == "tool" or typ == "spawn") then return true end
+  if blocked_table[class] and sh_PProtect.IsWorld(ent) and (typ == "phys" or typ == "tool" or typ == "spawn") then return true end
 end
 
 -----------------
